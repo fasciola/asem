@@ -1,0 +1,72 @@
+/* Typography hierarchy: gold headlines, clear white supporting copy */
+
+main h1,
+main h2,
+main h3 {
+  color: var(--gold-light, #f3c98b) !important;
+}
+
+main h1 *,
+main h2 *,
+main h3 * {
+  color: inherit !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+/* Remove split white/gold headline treatments and gradient text */
+main h1,
+main h2,
+main h3,
+main h1 span,
+main h2 span,
+main h3 span {
+  background-image: none !important;
+  background-clip: border-box !important;
+  -webkit-background-clip: border-box !important;
+  text-shadow: 0 0 24px rgba(214, 161, 79, 0.08);
+}
+
+/* Supporting copy should be clear rather than muted gray */
+main section p,
+main section li,
+main section address,
+main section [class*="description"],
+main section [class*="subtitle"],
+main section [class*="body"] {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Contact details and other small informational text */
+main section a:not(.btn-primary):not(.btn-outline),
+main section [style*="rgba(255,255,255,0.7"],
+main section [style*="rgba(255, 255, 255, 0.7"],
+main section [style*="rgba(255,255,255,0.6"],
+main section [style*="rgba(255, 255, 255, 0.6"],
+main section [style*="rgba(255,255,255,0.5"],
+main section [style*="rgba(255, 255, 255, 0.5"] {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Keep gold eyebrow labels and accent icons where explicitly assigned */
+main section p[style*="var(--cyan-accent"],
+main section p[style*="var(--gold"],
+main section [style*="color: #f3c98b"],
+main section [style*="color:#f3c98b"],
+main section [style*="color: #d6a14f"],
+main section [style*="color:#d6a14f"] {
+  color: var(--gold-light, #f3c98b) !important;
+}
+
+@media (max-width: 768px) {
+  main h1,
+  main h2,
+  main h3 {
+    color: var(--gold-light, #f3c98b) !important;
+  }
+
+  main section p,
+  main section li,
+  main section address {
+    color: rgba(255, 255, 255, 0.92) !important;
+  }
+}
