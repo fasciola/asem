@@ -311,15 +311,47 @@ canvas {
   --tw-shadow-color: rgba(214, 161, 79, 0.28) !important;
 }
 
-[style*="rgba(0, 229, 255"],
-[style*="rgba(0,229,255"],
-[style*="rgba(0, 190, 230"],
-[style*="rgba(0,190,230"],
-[style*="rgba(0, 120, 180"],
-[style*="rgba(0,120,180"],
-[style*="rgba(0, 87, 255"],
-[style*="rgba(0,87,255"] {
-  background-image: radial-gradient(ellipse at 50% 42%, rgba(214, 161, 79, 0.17) 0%, rgba(92, 63, 24, 0.09) 42%, transparent 72%) !important;
+/* Replace inline blue/cyan backgrounds and glows */
+[style*="background"][style*="rgba(0, 229, 255"],
+[style*="background"][style*="rgba(0,229,255"],
+[style*="background"][style*="rgba(0, 190, 230"],
+[style*="background"][style*="rgba(0,190,230"],
+[style*="background"][style*="rgba(0, 120, 180"],
+[style*="background"][style*="rgba(0,120,180"],
+[style*="background"][style*="rgba(0, 90, 150"],
+[style*="background"][style*="rgba(0,90,150"],
+[style*="background"][style*="rgba(0, 87, 255"],
+[style*="background"][style*="rgba(0,87,255"],
+[style*="background"][style*="#0057FF"],
+[style*="background"][style*="#00E5FF"] {
+  background: radial-gradient(ellipse at 50% 42%, rgba(214, 161, 79, 0.18) 0%, rgba(92, 63, 24, 0.1) 42%, transparent 72%), #070604 !important;
+}
+
+/* Replace inline blue/cyan text and icon colors */
+[style*="color: rgba(0, 229, 255"],
+[style*="color:rgba(0,229,255"],
+[style*="color: rgb(0, 229, 255"],
+[style*="color:rgb(0,229,255"],
+[style*="color: #00E5FF"],
+[style*="color:#00E5FF"],
+[style*="color: #0057FF"],
+[style*="color:#0057FF"] {
+  color: var(--gold-light) !important;
+}
+
+/* Replace inline blue borders and shadows */
+[style*="border"][style*="0, 229, 255"],
+[style*="border"][style*="0,229,255"],
+[style*="border"][style*="0, 87, 255"],
+[style*="border"][style*="0,87,255"] {
+  border-color: rgba(214, 161, 79, 0.4) !important;
+}
+
+[style*="box-shadow"][style*="0, 229, 255"],
+[style*="box-shadow"][style*="0,229,255"],
+[style*="box-shadow"][style*="0, 87, 255"],
+[style*="box-shadow"][style*="0,87,255"] {
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.55), 0 0 24px rgba(214, 161, 79, 0.18) !important;
 }
 
 main section {
