@@ -268,3 +268,65 @@
     -webkit-backdrop-filter: blur(10px);
   }
 }
+
+/* Strong black-and-gold theme overrides for legacy blue/cyan styling */
+canvas {
+  filter: sepia(1) saturate(1.8) hue-rotate(348deg) brightness(0.48) contrast(1.18);
+  opacity: 0.62;
+}
+
+[class*="bg-blue-"],
+[class*="bg-cyan-"] {
+  background-color: rgba(214, 161, 79, 0.12) !important;
+}
+
+[class*="text-blue-"],
+[class*="text-cyan-"] {
+  color: var(--gold-light) !important;
+}
+
+[class*="border-blue-"],
+[class*="border-cyan-"] {
+  border-color: rgba(214, 161, 79, 0.35) !important;
+}
+
+[class*="from-blue-"],
+[class*="from-cyan-"] {
+  --tw-gradient-from: rgba(143, 100, 39, 0.85) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: rgba(143, 100, 39, 0) var(--tw-gradient-to-position) !important;
+}
+
+[class*="via-blue-"],
+[class*="via-cyan-"] {
+  --tw-gradient-via: rgba(214, 161, 79, 0.5) var(--tw-gradient-via-position) !important;
+}
+
+[class*="to-blue-"],
+[class*="to-cyan-"] {
+  --tw-gradient-to: rgba(243, 201, 139, 0.22) var(--tw-gradient-to-position) !important;
+}
+
+[class*="shadow-blue-"],
+[class*="shadow-cyan-"] {
+  --tw-shadow-color: rgba(214, 161, 79, 0.28) !important;
+}
+
+[style*="rgba(0, 229, 255"],
+[style*="rgba(0,229,255"],
+[style*="rgba(0, 190, 230"],
+[style*="rgba(0,190,230"],
+[style*="rgba(0, 120, 180"],
+[style*="rgba(0,120,180"],
+[style*="rgba(0, 87, 255"],
+[style*="rgba(0,87,255"] {
+  background-image: radial-gradient(ellipse at 50% 42%, rgba(214, 161, 79, 0.17) 0%, rgba(92, 63, 24, 0.09) 42%, transparent 72%) !important;
+}
+
+main section {
+  border-color: rgba(214, 161, 79, 0.12) !important;
+}
+
+main section::selection {
+  background: var(--gold-primary);
+  color: #050505;
+}
