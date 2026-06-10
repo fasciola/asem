@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { expertiseConfig } from '../config'; // or import from your config file
+import { expertiseConfig } from '../config';
 import type { UseLanguageReturn } from '../hooks/useLanguage';
 
 interface ExpertiseSectionProps {
@@ -25,20 +25,17 @@ export default function ExpertiseSection({ lang }: ExpertiseSectionProps) {
             }
         );
 
-        const elements =
-            sectionRef.current?.querySelectorAll<HTMLElement>('.reveal');
+        const elements = sectionRef.current?.querySelectorAll<HTMLElement>('.reveal');
+        elements?.forEach((element) => observer.observe(element));
 
-        elements?.forEach((element) => {
-            observer.observe(element);
-        });
-
-        return () => {
-            observer.disconnect();
-        };
+        return () => observer.disconnect();
     }, []);
 
     const translatedTitle = t(expertiseConfig.title, expertiseConfig.titleAr);
-    const titleParts = translatedTitle.split('2024'); // example split, adjust as needed
+    const year = '2012';
+    const yearIndex = translatedTitle.indexOf(year);
+    const titleBeforeYear = yearIndex >= 0 ? translatedTitle.slice(0, yearIndex) : translatedTitle;
+    const titleAfterYear = yearIndex >= 0 ? translatedTitle.slice(yearIndex + year.length) : '';
 
     return (
         <section
@@ -53,7 +50,6 @@ export default function ExpertiseSection({ lang }: ExpertiseSectionProps) {
                 overflow: 'hidden',
             }}
         >
-            {/* Background gradient accents */}
             <div
                 aria-hidden="true"
                 style={{
@@ -61,17 +57,9 @@ export default function ExpertiseSection({ lang }: ExpertiseSectionProps) {
                     inset: 0,
                     pointerEvents: 'none',
                     background: `
-            radial-gradient(
-              circle at 20% 80%,
-              rgba(0, 229, 255, 0.08) 0%,
-              transparent 40%
-            ),
-            radial-gradient(
-              circle at 80% 20%,
-              rgba(0, 87, 255, 0.1) 0%,
-              transparent 35%
-            )
-          `,
+                        radial-gradient(circle at 20% 80%, rgba(214, 161, 79, 0.08) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 20%, rgba(243, 201, 139, 0.06) 0%, transparent 35%)
+                    `,
                 }}
             />
 
@@ -84,10 +72,8 @@ export default function ExpertiseSection({ lang }: ExpertiseSectionProps) {
                 }}
             >
                 <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16 xl:gap-20">
-                    {/* Content */}
                     <div
-                        className={`reveal ${isRTL ? 'lg:order-2' : 'lg:order-1'
-                            }`}
+                        className={`reveal ${isRTL ? 'lg:order-2' : 'lg:order-1'}`}
                         style={{
                             position: 'relative',
                             zIndex: 2,
@@ -96,12 +82,10 @@ export default function ExpertiseSection({ lang }: ExpertiseSectionProps) {
                     >
                         <p
                             style={{
-                                fontFamily: isRTL
-                                    ? "'Cairo', sans-serif"
-                                    : "'Space Grotesk', sans-serif",
+                                fontFamily: isRTL ? "'Cairo', sans-serif" : "'Space Grotesk', sans-serif",
                                 fontSize: '12px',
                                 letterSpacing: isRTL ? '0.08em' : '0.3em',
-                                color: 'var(--cyan-accent, #00E5FF)',
+                                color: 'var(--gold-light, #f3c98b)',
                                 textTransform: isRTL ? 'none' : 'uppercase',
                                 marginBottom: '1.5rem',
                                 fontWeight: 700,
@@ -112,38 +96,34 @@ export default function ExpertiseSection({ lang }: ExpertiseSectionProps) {
 
                         <h2
                             style={{
-                                fontFamily: isRTL
-                                    ? "'Cairo', sans-serif"
-                                    : "'Space Grotesk', sans-serif",
+                                fontFamily: isRTL ? "'Cairo', sans-serif" : "'Space Grotesk', sans-serif",
                                 fontSize: 'clamp(2rem, 4vw, 3.5rem)',
                                 fontWeight: 600,
                                 lineHeight: 1.15,
                                 marginBottom: '2rem',
-                                color: '#ffffff',
+                                color: '#fffaf0',
                             }}
                         >
-                            {titleParts[0]}
-
-                            <span
-                                dir="ltr"
-                                style={{
-                                    display: 'inline-block',
-                                    color: 'var(--cyan-accent, #00E5FF)',
-                                }}
-                            >
-                                2024
-                            </span>
-
-                            {titleParts[1] || '.'}
+                            {titleBeforeYear}
+                            {yearIndex >= 0 && (
+                                <span
+                                    dir="ltr"
+                                    style={{
+                                        display: 'inline-block',
+                                        color: 'var(--gold-light, #f3c98b)',
+                                    }}
+                                >
+                                    {year}
+                                </span>
+                            )}
+                            {titleAfterYear || '.'}
                         </h2>
 
                         <p
                             style={{
-                                fontFamily: isRTL
-                                    ? "'Cairo', sans-serif"
-                                    : "'Inter', sans-serif",
+                                fontFamily: isRTL ? "'Cairo', sans-serif" : "'Inter', sans-serif",
                                 fontSize: 'clamp(14px, 1.2vw, 18px)',
-                                color: 'rgba(255, 255, 255, 0.7)',
+                                color: 'rgba(255, 250, 240, 0.72)',
                                 fontWeight: 300,
                                 lineHeight: isRTL ? 2 : 1.8,
                                 maxWidth: '600px',
@@ -154,30 +134,27 @@ export default function ExpertiseSection({ lang }: ExpertiseSectionProps) {
                             {t(expertiseConfig.body, expertiseConfig.bodyAr)}
                         </p>
 
-                        {/* Statistics (optional) */}
                         {expertiseConfig.stats && (
                             <div
                                 className="grid grid-cols-1 gap-8 text-center sm:grid-cols-3 sm:text-start"
                                 style={{
                                     marginTop: '3rem',
                                     paddingTop: '3rem',
-                                    borderTop: '1px solid rgba(0, 229, 255, 0.15)',
+                                    borderTop: '1px solid rgba(214, 161, 79, 0.2)',
                                 }}
                             >
                                 {expertiseConfig.stats.map((stat) => (
                                     <div
                                         key={`${stat.value}-${stat.label}`}
                                         className="max-sm:!text-center"
-                                        style={{
-                                            textAlign: isRTL ? 'right' : 'left',
-                                        }}
+                                        style={{ textAlign: isRTL ? 'right' : 'left' }}
                                     >
                                         <span
                                             dir="ltr"
                                             style={{
                                                 display: 'block',
                                                 fontSize: 'clamp(2rem, 3vw, 2.5rem)',
-                                                color: 'var(--cyan-accent, #00E5FF)',
+                                                color: 'var(--gold-light, #f3c98b)',
                                                 fontWeight: 600,
                                                 fontFamily: "'Space Grotesk', sans-serif",
                                             }}
@@ -192,10 +169,8 @@ export default function ExpertiseSection({ lang }: ExpertiseSectionProps) {
                                                 fontSize: '11px',
                                                 textTransform: isRTL ? 'none' : 'uppercase',
                                                 letterSpacing: isRTL ? '0.05em' : '0.15em',
-                                                color: 'rgba(0, 229, 255, 0.6)',
-                                                fontFamily: isRTL
-                                                    ? "'Cairo', sans-serif"
-                                                    : "'Space Grotesk', sans-serif",
+                                                color: 'rgba(243, 201, 139, 0.68)',
+                                                fontFamily: isRTL ? "'Cairo', sans-serif" : "'Space Grotesk', sans-serif",
                                             }}
                                         >
                                             {t(stat.label, stat.labelAr)}
@@ -206,14 +181,9 @@ export default function ExpertiseSection({ lang }: ExpertiseSectionProps) {
                         )}
                     </div>
 
-                    {/* Video */}
                     <div
-                        className={`reveal ${isRTL ? 'lg:order-1' : 'lg:order-2'
-                            }`}
-                        style={{
-                            position: 'relative',
-                            width: '100%',
-                        }}
+                        className={`reveal ${isRTL ? 'lg:order-1' : 'lg:order-2'}`}
+                        style={{ position: 'relative', width: '100%' }}
                     >
                         <div
                             style={{
@@ -222,9 +192,9 @@ export default function ExpertiseSection({ lang }: ExpertiseSectionProps) {
                                 aspectRatio: '4 / 5',
                                 borderRadius: '1rem',
                                 overflow: 'hidden',
-                                border: '1px solid rgba(0, 229, 255, 0.3)',
-                                background: 'rgba(7, 27, 52, 0.35)',
-                                boxShadow: '0 30px 80px rgba(0, 0, 0, 0.25)',
+                                border: '1px solid rgba(214, 161, 79, 0.32)',
+                                background: 'rgba(10, 8, 5, 0.55)',
+                                boxShadow: '0 30px 80px rgba(0, 0, 0, 0.35)',
                             }}
                         >
                             <video
@@ -239,29 +209,21 @@ export default function ExpertiseSection({ lang }: ExpertiseSectionProps) {
                                     width: '100%',
                                     height: '100%',
                                     objectFit: 'cover',
-                                    filter: 'brightness(0.9)',
+                                    filter: 'brightness(0.88) sepia(0.12)',
                                 }}
                             />
 
-                            {/* Optional overlay */}
                             <div
                                 aria-hidden="true"
                                 style={{
                                     position: 'absolute',
                                     inset: 0,
                                     pointerEvents: 'none',
-                                    background: `
-                    linear-gradient(
-                      to top,
-                      rgba(3, 13, 25, 0.45) 0%,
-                      transparent 45%
-                    )
-                  `,
+                                    background: 'linear-gradient(to top, rgba(8, 5, 2, 0.5) 0%, transparent 45%)',
                                 }}
                             />
                         </div>
 
-                        {/* Quote card (hidden on smaller screens) */}
                         <div
                             className="hidden xl:block"
                             style={{
@@ -272,11 +234,11 @@ export default function ExpertiseSection({ lang }: ExpertiseSectionProps) {
                                 width: 'min(300px, 75%)',
                                 padding: '2rem',
                                 borderRadius: '1rem',
-                                background: 'rgba(7, 27, 52, 0.9)',
-                                border: '1px solid rgba(0, 229, 255, 0.25)',
+                                background: 'rgba(10, 8, 5, 0.92)',
+                                border: '1px solid rgba(214, 161, 79, 0.28)',
                                 backdropFilter: 'blur(20px)',
                                 WebkitBackdropFilter: 'blur(20px)',
-                                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.25)',
+                                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.35)',
                                 textAlign: isRTL ? 'right' : 'left',
                             }}
                         >
@@ -285,7 +247,7 @@ export default function ExpertiseSection({ lang }: ExpertiseSectionProps) {
                                 height="32"
                                 viewBox="0 0 24 24"
                                 fill="none"
-                                stroke="rgba(0, 229, 255, 0.3)"
+                                stroke="rgba(243, 201, 139, 0.42)"
                                 strokeWidth="1.5"
                                 aria-hidden="true"
                                 style={{
@@ -300,10 +262,8 @@ export default function ExpertiseSection({ lang }: ExpertiseSectionProps) {
                             <p
                                 style={{
                                     marginBottom: '1rem',
-                                    color: 'rgba(255, 255, 255, 0.72)',
-                                    fontFamily: isRTL
-                                        ? "'Cairo', sans-serif"
-                                        : "'Inter', sans-serif",
+                                    color: 'rgba(255, 250, 240, 0.72)',
+                                    fontFamily: isRTL ? "'Cairo', sans-serif" : "'Inter', sans-serif",
                                     fontSize: '14px',
                                     fontStyle: isRTL ? 'normal' : 'italic',
                                     lineHeight: isRTL ? 1.9 : 1.6,
@@ -315,10 +275,8 @@ export default function ExpertiseSection({ lang }: ExpertiseSectionProps) {
                             <span
                                 style={{
                                     display: 'block',
-                                    color: 'var(--cyan-accent, #00E5FF)',
-                                    fontFamily: isRTL
-                                        ? "'Cairo', sans-serif"
-                                        : "'Space Grotesk', sans-serif",
+                                    color: 'var(--gold-light, #f3c98b)',
+                                    fontFamily: isRTL ? "'Cairo', sans-serif" : "'Space Grotesk', sans-serif",
                                     fontSize: '11px',
                                     fontWeight: 600,
                                     letterSpacing: isRTL ? '0.05em' : '0.2em',
