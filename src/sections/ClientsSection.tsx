@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { clientsConfig } from '../config';
+import { extraClients } from '../extraClients';
 import type { UseLanguageReturn } from '../hooks/useLanguage';
 
 interface ClientsSectionProps {
@@ -23,7 +24,7 @@ export default function ClientsSection({ lang }: ClientsSectionProps) {
     return () => observer.disconnect();
   }, []);
 
-  const clients = clientsConfig.clients;
+  const clients = [...clientsConfig.clients, ...extraClients];
 
   return (
     <section
