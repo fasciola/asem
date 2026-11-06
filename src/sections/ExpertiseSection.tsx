@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { expertiseConfig } from '../config';
+import LazyVideo from '../components/LazyVideo';
 import type { UseLanguageReturn } from '../hooks/useLanguage';
 
 interface ExpertiseSectionProps {
@@ -57,8 +58,7 @@ export default function ExpertiseSection({ lang }: ExpertiseSectionProps) {
                     inset: 0,
                     pointerEvents: 'none',
                     background: `
-                        radial-gradient(circle at 20% 80%, rgba(214, 161, 79, 0.08) 0%, transparent 40%),
-                        radial-gradient(circle at 80% 20%, rgba(243, 201, 139, 0.06) 0%, transparent 35%)
+                        none
                     `,
                 }}
             />
@@ -140,7 +140,7 @@ export default function ExpertiseSection({ lang }: ExpertiseSectionProps) {
                                 style={{
                                     marginTop: '3rem',
                                     paddingTop: '3rem',
-                                    borderTop: '1px solid rgba(214, 161, 79, 0.2)',
+                                    borderTop: '1px solid rgba(255, 255, 255, 0.12)',
                                 }}
                             >
                                 {expertiseConfig.stats.map((stat) => (
@@ -192,18 +192,14 @@ export default function ExpertiseSection({ lang }: ExpertiseSectionProps) {
                                 aspectRatio: '4 / 5',
                                 borderRadius: '1rem',
                                 overflow: 'hidden',
-                                border: '1px solid rgba(214, 161, 79, 0.32)',
-                                background: 'rgba(10, 8, 5, 0.55)',
+                                border: '1px solid rgba(255, 255, 255, 0.16)',
+                                background: 'rgba(0, 0, 0, 0.55)',
                                 boxShadow: '0 30px 80px rgba(0, 0, 0, 0.35)',
                             }}
                         >
-                            <video
+                            <LazyVideo
                                 src={`/${expertiseConfig.videoSrc}`}
                                 poster={`/${expertiseConfig.videoPoster}`}
-                                autoPlay
-                                muted
-                                loop
-                                playsInline
                                 style={{
                                     display: 'block',
                                     width: '100%',
@@ -219,7 +215,7 @@ export default function ExpertiseSection({ lang }: ExpertiseSectionProps) {
                                     position: 'absolute',
                                     inset: 0,
                                     pointerEvents: 'none',
-                                    background: 'linear-gradient(to top, rgba(8, 5, 2, 0.5) 0%, transparent 45%)',
+                                    background: 'linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, transparent 45%)',
                                 }}
                             />
                         </div>
@@ -234,8 +230,8 @@ export default function ExpertiseSection({ lang }: ExpertiseSectionProps) {
                                 width: 'min(300px, 75%)',
                                 padding: '2rem',
                                 borderRadius: '1rem',
-                                background: 'rgba(10, 8, 5, 0.92)',
-                                border: '1px solid rgba(214, 161, 79, 0.28)',
+                                background: 'rgba(0, 0, 0, 0.92)',
+                                border: '1px solid rgba(255, 255, 255, 0.14)',
                                 backdropFilter: 'blur(20px)',
                                 WebkitBackdropFilter: 'blur(20px)',
                                 boxShadow: '0 20px 50px rgba(0, 0, 0, 0.35)',

@@ -236,11 +236,7 @@ export const expertiseConfig: ExpertiseConfig = {
     videoPoster: 'images/expertise-poster.jpg',
     quote: 'Strategic creativity that moves markets.',
     quoteAr: 'إبداع استراتيجي يحرك الأسواق.',
-    stats: [
-        { value: '150+', label: 'Campaigns', labelAr: 'حملة' },
-        { value: '12+', label: 'Markets Served', labelAr: 'سوق مخدوم' },
-        { value: '98%', label: 'Client Retention', labelAr: 'استبقاء العملاء' },
-    ],
+    // stats intentionally omitted: shown once in ImpactStatsSection (from aboutConfig.stats)
 };
 
 export const missionConfig: MissionConfig = {

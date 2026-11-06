@@ -66,8 +66,8 @@ export default function Navigation({ lang }: NavigationProps) {
     };
 
     const navBackground = scrolled || mobileOpen
-        ? 'rgba(5, 10, 15, 0.9)'
-        : 'rgba(5, 10, 15, 0.5)';
+        ? 'rgba(0, 0, 0, 0.9)'
+        : 'rgba(0, 0, 0, 0.5)';
 
     return (
         <>
@@ -280,7 +280,7 @@ export default function Navigation({ lang }: NavigationProps) {
                     gap: '1.35rem',
                     padding: '7rem 1.5rem 2rem',
                     background:
-                        'radial-gradient(ellipse at 50% 35%, rgba(0, 229, 255, 0.16) 0%, transparent 58%), rgba(5, 10, 15, 0.96)',
+                        'radial-gradient(ellipse at 50% 35%, rgba(0, 229, 255, 0.16) 0%, transparent 58%), rgba(0, 0, 0, 0.96)',
                     backdropFilter: 'blur(26px)',
                     WebkitBackdropFilter: 'blur(26px)',
                     opacity: mobileOpen ? 1 : 0,

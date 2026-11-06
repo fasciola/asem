@@ -440,11 +440,14 @@ export default function RainOnGlass() {
 
         const onVis = () => { paused = document.hidden; };
         document.addEventListener('visibilitychange', onVis);
+        let onScreen = true;
+        const io = new IntersectionObserver(([entry]) => { onScreen = entry.isIntersecting; });
+        io.observe(canvas!);
 
         function render() {
             if (destroyed) return;
             requestAnimationFrame(render);
-            if (paused) return;
+            if (paused || !onScreen) return;
             rdUpdate();
             gl!.activeTexture(gl!.TEXTURE0); gl!.bindTexture(gl!.TEXTURE_2D, waterTex);
             gl!.texImage2D(gl!.TEXTURE_2D, 0, gl!.RGBA, gl!.RGBA, gl!.UNSIGNED_BYTE, rdCanvas);
@@ -465,6 +468,7 @@ export default function RainOnGlass() {
             destroyed = true;
             window.removeEventListener('resize', onResize);
             document.removeEventListener('visibilitychange', onVis);
+            io.disconnect();
         };
     }, []);
 
