@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import LazyVideo from '../components/LazyVideo';
 import { contactConfig } from '../config';
 import type { UseLanguageReturn } from '../hooks/useLanguage';
 
@@ -48,21 +49,15 @@ export default function ContactSection({ lang }: ContactSectionProps) {
           zIndex: 0,
         }}
       >
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="none"
+        <LazyVideo
+          src="/videos/contact-ambience.mp4"
           style={{
             width: '100%',
             height: '100%',
             objectFit: 'cover',
             opacity: 0.6,
           }}
-        >
-          <source src="/videos/contact-ambience.mp4" type="video/mp4" />
-        </video>
+        />
       </div>
 
       {/* Gradient Overlay */}
@@ -71,7 +66,7 @@ export default function ContactSection({ lang }: ContactSectionProps) {
           position: 'absolute',
           inset: 0,
           zIndex: 1,
-          background: 'radial-gradient(circle at 50% 40%, rgba(5,10,15,0.85) 0%, rgba(5,10,15,0.6) 50%)',
+          background: 'radial-gradient(circle at 50% 40%, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 50%)',
         }}
       />
 
@@ -89,7 +84,7 @@ export default function ContactSection({ lang }: ContactSectionProps) {
         {/* Glass Card */}
         <div
           style={{
-            background: 'rgba(7,27,52,0.8)',
+            background: 'rgba(0, 0, 0,0.8)',
             backdropFilter: 'blur(30px)',
             WebkitBackdropFilter: 'blur(30px)',
             border: '1px solid rgba(0,229,255,0.2)',

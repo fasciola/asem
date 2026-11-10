@@ -6,326 +6,149 @@ interface AboutSectionProps {
     lang: UseLanguageReturn;
 }
 
+const IMG = '/images/cine';
+
 export default function AboutSection({ lang }: AboutSectionProps) {
     const { t, isRTL } = lang;
     const sectionRef = useRef<HTMLElement>(null);
 
+    // --t: 0 = light "idea" state, 1 = dark "impact" state, driven by scroll position
     useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            },
-            {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px',
-            }
-        );
+        const el = sectionRef.current;
+        if (!el) return;
 
-        const elements =
-            sectionRef.current?.querySelectorAll<HTMLElement>('.reveal');
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduce) {
+            el.style.setProperty('--t', '1');
+            return;
+        }
 
-        elements?.forEach((element) => {
-            observer.observe(element);
-        });
-
+        let raf = 0;
+        const update = () => {
+            raf = 0;
+            const vh = window.innerHeight;
+            const top = el.getBoundingClientRect().top;
+            // starts light as the section enters, fully dark once its top reaches ~15% of the viewport
+            const p = (vh * 0.7 - top) / (vh * 0.35);
+            el.style.setProperty('--t', Math.max(0, Math.min(1, p)).toFixed(3));
+        };
+        const onScroll = () => {
+            if (!raf) raf = requestAnimationFrame(update);
+        };
+        update();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll);
         return () => {
-            observer.disconnect();
+            cancelAnimationFrame(raf);
+            window.removeEventListener('scroll', onScroll);
+            window.removeEventListener('resize', onScroll);
         };
     }, []);
 
     const translatedTitle = t(aboutConfig.title, aboutConfig.titleAr);
     const titleParts = translatedTitle.split('2012');
 
+    const label = isRTL ? "'Cairo', sans-serif" : "'Space Grotesk', sans-serif";
+    const body = isRTL ? "'Cairo', sans-serif" : "'Inter', sans-serif";
+    const display = isRTL ? "'Cairo', sans-serif" : "'Instrument Serif', serif";
+
     return (
-        <section
-            ref={sectionRef}
-            id="about"
-            dir={isRTL ? 'rtl' : 'ltr'}
-            style={{
-                position: 'relative',
-                width: '100%',
-                padding: 'clamp(4rem, 8vw, 8rem) 0',
-                zIndex: 2,
-                overflow: 'hidden',
-            }}
-        >
-            {/* Background gradient accents */}
-            <div
-                aria-hidden="true"
-                style={{
-                    position: 'absolute',
-                    inset: 0,
-                    pointerEvents: 'none',
-                    background: `
-            radial-gradient(
-              circle at 30% 20%,
-              rgba(0, 87, 255, 0.12) 0%,
-              transparent 35%
-            ),
-            radial-gradient(
-              circle at 70% 70%,
-              rgba(0, 229, 255, 0.08) 0%,
-              transparent 40%
-            )
-          `,
-                }}
-            />
+        <section ref={sectionRef} id="about" className="ab" dir={isRTL ? 'rtl' : 'ltr'}>
+            {/* Portrait pair: light underneath, dark fades in on top */}
+            <div className="ab-bg" aria-hidden="true">
+                <img className="ab-img ab-img-light" src={`${IMG}/about-light.webp`} alt="" width={1536} height={1024} loading="lazy" decoding="async" />
+                <img className="ab-img ab-img-dark" src={`${IMG}/about-dark.webp`} alt="" width={1536} height={1024} loading="lazy" decoding="async" />
+                <div className="ab-fade" />
+            </div>
 
-            <div
-                style={{
-                    position: 'relative',
-                    maxWidth: '1200px',
-                    margin: '0 auto',
-                    padding: '0 clamp(1.5rem, 4vw, 3rem)',
-                }}
-            >
-                <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16 xl:gap-20">
-                    {/* Content */}
-                    <div
-                        className={`reveal ${isRTL ? 'lg:order-2' : 'lg:order-1'
-                            }`}
-                        style={{
-                            position: 'relative',
-                            zIndex: 2,
-                            textAlign: isRTL ? 'right' : 'left',
-                        }}
-                    >
-                        <p
-                            style={{
-                                fontFamily: isRTL
-                                    ? "'Cairo', sans-serif"
-                                    : "'Space Grotesk', sans-serif",
-                                fontSize: '12px',
-                                letterSpacing: isRTL ? '0.08em' : '0.3em',
-                                color: 'var(--cyan-accent, #00E5FF)',
-                                textTransform: isRTL ? 'none' : 'uppercase',
-                                marginBottom: '1.5rem',
-                                fontWeight: 700,
-                            }}
-                        >
-                            {t(aboutConfig.tagline, aboutConfig.taglineAr)}
-                        </p>
+            {/* Idea → Impact state label */}
+            <div className="ab-state" aria-hidden="true" style={{ fontFamily: label }}>
+                <span className="ab-state-a">{t('Idea', 'فكرة')}</span>
+                <span className="ab-state-line" />
+                <span className="ab-state-b">{t('Impact', 'أثر')}</span>
+            </div>
 
-                        <h2
-                            style={{
-                                fontFamily: isRTL
-                                    ? "'Cairo', sans-serif"
-                                    : "'Space Grotesk', sans-serif",
-                                fontSize: 'clamp(2rem, 4vw, 3.5rem)',
-                                fontWeight: 600,
-                                lineHeight: 1.15,
-                                marginBottom: '2rem',
-                                color: '#ffffff',
-                            }}
-                        >
-                            {titleParts[0]}
+            <div className="ab-wrap">
+                <div className="ab-copy">
+                    <p className="ab-eyebrow" style={{ fontFamily: label }}>
+                        {t(aboutConfig.tagline, aboutConfig.taglineAr)}
+                    </p>
 
-                            <span
-                                dir="ltr"
-                                style={{
-                                    display: 'inline-block',
-                                    color: 'var(--cyan-accent, #00E5FF)',
-                                }}
-                            >
-                                2012
-                            </span>
+                    <h2 className="ab-title" style={{ fontFamily: display }}>
+                        {titleParts[0]}
+                        <span dir="ltr" className="ab-accent" style={{ fontStyle: isRTL ? 'normal' : 'italic' }}>
+                            2012
+                        </span>
+                        {titleParts[1] || '.'}
+                    </h2>
 
-                            {titleParts[1] || '.'}
-                        </h2>
+                    <p className="ab-body" style={{ fontFamily: body }}>
+                        {t(aboutConfig.body, aboutConfig.bodyAr)}
+                    </p>
 
-                        <p
-                            style={{
-                                fontFamily: isRTL
-                                    ? "'Cairo', sans-serif"
-                                    : "'Inter', sans-serif",
-                                fontSize: 'clamp(14px, 1.2vw, 18px)',
-                                color: 'rgba(255, 255, 255, 0.7)',
-                                fontWeight: 300,
-                                lineHeight: isRTL ? 2 : 1.8,
-                                maxWidth: '600px',
-                                marginLeft: isRTL ? 'auto' : 0,
-                                marginRight: isRTL ? 0 : 'auto',
-                            }}
-                        >
-                            {t(aboutConfig.body, aboutConfig.bodyAr)}
-                        </p>
 
-                        {/* Statistics */}
-                        <div
-                            className="grid grid-cols-1 gap-8 text-center sm:grid-cols-3 sm:text-start"
-                            style={{
-                                marginTop: '3rem',
-                                paddingTop: '3rem',
-                                borderTop: '1px solid rgba(0, 229, 255, 0.15)',
-                            }}
-                        >
-                            {aboutConfig.stats.map((stat) => (
-                                <div
-                                    key={`${stat.value}-${stat.label}`}
-                                    className="max-sm:!text-center"
-                                    style={{
-                                        textAlign: isRTL ? 'right' : 'left',
-                                    }}
-                                >
-                                    <span
-                                        dir="ltr"
-                                        style={{
-                                            display: 'block',
-                                            fontSize: 'clamp(2rem, 3vw, 2.5rem)',
-                                            color: 'var(--cyan-accent, #00E5FF)',
-                                            fontWeight: 600,
-                                            fontFamily: "'Space Grotesk', sans-serif",
-                                        }}
-                                    >
-                                        {stat.value}
-                                    </span>
-
-                                    <span
-                                        style={{
-                                            display: 'block',
-                                            marginTop: '0.5rem',
-                                            fontSize: '11px',
-                                            textTransform: isRTL ? 'none' : 'uppercase',
-                                            letterSpacing: isRTL ? '0.05em' : '0.15em',
-                                            color: 'rgba(0, 229, 255, 0.6)',
-                                            fontFamily: isRTL
-                                                ? "'Cairo', sans-serif"
-                                                : "'Space Grotesk', sans-serif",
-                                        }}
-                                    >
-                                        {t(stat.label, stat.labelAr)}
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Image */}
-                    <div
-                        className={`reveal ${isRTL ? 'lg:order-1' : 'lg:order-2'
-                            }`}
-                        style={{
-                            position: 'relative',
-                            width: '100%',
-                        }}
-                    >
-                        <div
-                            style={{
-                                position: 'relative',
-                                width: '100%',
-                                aspectRatio: '4 / 5',
-                                borderRadius: '1rem',
-                                overflow: 'hidden',
-                                border: '1px solid rgba(0, 229, 255, 0.3)',
-                                background: 'rgba(7, 27, 52, 0.35)',
-                                boxShadow: '0 30px 80px rgba(0, 0, 0, 0.25)',
-                            }}
-                        >
-                            <img
-                                src={`/${aboutConfig.image}`}
-                                alt={t('Luxury Awards Stage', 'منصة جوائز فاخرة')}
-                                loading="lazy"
-                                style={{
-                                    display: 'block',
-                                    width: '100%',
-                                    height: '100%',
-                                    objectFit: 'cover',
-                                    filter: 'brightness(0.9)',
-                                }}
-                            />
-
-                            {/* Image overlay */}
-                            <div
-                                aria-hidden="true"
-                                style={{
-                                    position: 'absolute',
-                                    inset: 0,
-                                    pointerEvents: 'none',
-                                    background: `
-                    linear-gradient(
-                      to top,
-                      rgba(3, 13, 25, 0.45) 0%,
-                      transparent 45%
-                    )
-                  `,
-                                }}
-                            />
-                        </div>
-
-                        {/* Quote card */}
-                        <div
-                            className="hidden xl:block"
-                            style={{
-                                position: 'absolute',
-                                bottom: '-2rem',
-                                right: isRTL ? 'auto' : '-2rem',
-                                left: isRTL ? '-2rem' : 'auto',
-                                width: 'min(300px, 75%)',
-                                padding: '2rem',
-                                borderRadius: '1rem',
-                                background: 'rgba(7, 27, 52, 0.9)',
-                                border: '1px solid rgba(0, 229, 255, 0.25)',
-                                backdropFilter: 'blur(20px)',
-                                WebkitBackdropFilter: 'blur(20px)',
-                                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.25)',
-                                textAlign: isRTL ? 'right' : 'left',
-                            }}
-                        >
-                            <svg
-                                width="32"
-                                height="32"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="rgba(0, 229, 255, 0.3)"
-                                strokeWidth="1.5"
-                                aria-hidden="true"
-                                style={{
-                                    display: 'block',
-                                    marginBottom: '1rem',
-                                    transform: isRTL ? 'scaleX(-1)' : 'none',
-                                }}
-                            >
-                                <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3" />
-                            </svg>
-
-                            <p
-                                style={{
-                                    marginBottom: '1rem',
-                                    color: 'rgba(255, 255, 255, 0.72)',
-                                    fontFamily: isRTL
-                                        ? "'Cairo', sans-serif"
-                                        : "'Inter', sans-serif",
-                                    fontSize: '14px',
-                                    fontStyle: isRTL ? 'normal' : 'italic',
-                                    lineHeight: isRTL ? 1.9 : 1.6,
-                                }}
-                            >
-                                &ldquo;{t(aboutConfig.quote, aboutConfig.quoteAr)}&rdquo;
-                            </p>
-
-                            <span
-                                style={{
-                                    display: 'block',
-                                    color: 'var(--cyan-accent, #00E5FF)',
-                                    fontFamily: isRTL
-                                        ? "'Cairo', sans-serif"
-                                        : "'Space Grotesk', sans-serif",
-                                    fontSize: '11px',
-                                    fontWeight: 600,
-                                    letterSpacing: isRTL ? '0.05em' : '0.2em',
-                                    textTransform: isRTL ? 'none' : 'uppercase',
-                                }}
-                            >
-                                — Asem Vision
-                            </span>
-                        </div>
-                    </div>
+                    <blockquote className="ab-quote" style={{ fontFamily: display }}>
+                        &ldquo;{t(aboutConfig.quote, aboutConfig.quoteAr)}&rdquo;
+                    </blockquote>
                 </div>
             </div>
+
+            <style>{`
+        .ab {
+          --t: 0;
+          --ink: color-mix(in srgb, #1d1612 calc((1 - var(--t)) * 100%), #ffffff);
+          --ink-soft: color-mix(in srgb, #4a3d33 calc((1 - var(--t)) * 100%), rgba(255,255,255,.82));
+          --accent: color-mix(in srgb, #8c5a1c calc((1 - var(--t)) * 100%), #f3c98b);
+          --rule: color-mix(in srgb, rgba(29,22,18,.25) calc((1 - var(--t)) * 100%), rgba(243,201,139,.28));
+          --bg: color-mix(in srgb, #f0e3da calc((1 - var(--t)) * 100%), #000000);
+          position: relative; overflow: hidden; isolation: isolate;
+          background: var(--bg);
+          min-height: clamp(640px, 88vh, 900px);
+          display: flex; align-items: center;
+          padding: clamp(4rem, 8vw, 7rem) 0;
+        }
+
+        .ab-bg { position: absolute; inset: 0; z-index: 0; }
+        .ab-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 85% center; }
+        [dir='rtl'] .ab-img { transform: scaleX(-1); }
+        .ab-img-dark { opacity: var(--t); }
+        /* soft edge so the artwork melts into the section colour on the text side */
+        .ab-fade { position: absolute; inset: 0; background: linear-gradient(to right, var(--bg) 0%, var(--bg) 34%, transparent 58%); }
+        [dir='rtl'] .ab-fade { background: linear-gradient(to left, var(--bg) 0%, var(--bg) 34%, transparent 58%); }
+
+        .ab-wrap { position: relative; z-index: 2; width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 clamp(1.5rem, 4vw, 3rem); }
+        .ab-copy { max-width: 560px; text-align: start; }
+
+        .ab .ab-eyebrow { margin: 0 0 1.4rem; font-size: 12px; letter-spacing: .3em; text-transform: uppercase; font-weight: 700; color: var(--accent) !important; }
+        [dir='rtl'] .ab .ab-eyebrow { letter-spacing: .08em; text-transform: none; }
+        .ab .ab-title { margin: 0 0 1.5rem; font-weight: 400; line-height: 1.02; letter-spacing: -.02em; font-size: clamp(2.3rem, 4.8vw, 4rem); color: var(--ink) !important; text-shadow: none !important; }
+        .ab .ab-title .ab-accent { display: inline-block; color: var(--accent) !important; }
+        .ab .ab-body { margin: 0 0 2rem; font-size: clamp(14px, 1.2vw, 17px); line-height: 1.8; font-weight: 400; color: var(--ink-soft) !important; }
+
+
+        .ab .ab-quote { margin: 0; padding-inline-start: 1.1rem; border-inline-start: 2px solid var(--accent); font-size: clamp(1.1rem, 1.7vw, 1.5rem); font-style: italic; line-height: 1.35; color: var(--ink) !important; max-width: 30ch; }
+        [dir='rtl'] .ab .ab-quote { font-style: normal; }
+
+        /* Idea → Impact marker */
+        .ab-state {
+          position: absolute; z-index: 3; top: clamp(1.5rem, 4vw, 3rem); right: clamp(1.5rem, 4vw, 3rem);
+          display: flex; align-items: center; gap: .8rem; font-size: 11px; letter-spacing: .25em; text-transform: uppercase;
+          color: var(--ink);
+        }
+        [dir='rtl'] .ab-state { right: auto; left: clamp(1.5rem, 4vw, 3rem); letter-spacing: .05em; text-transform: none; font-size: 13px; }
+        .ab-state-a { opacity: calc(1 - var(--t) * .7); }
+        .ab-state-b { opacity: calc(.3 + var(--t) * .7); color: var(--accent); }
+        .ab-state-line { width: 56px; height: 1px; background: linear-gradient(90deg, var(--ink) calc((1 - var(--t)) * 100%), var(--accent) 100%); opacity: .8; }
+
+        @media (max-width: 899px) {
+          .ab { display: block; padding-top: 0; min-height: 0; }
+          .ab-bg { bottom: auto; height: 74vw; }
+          .ab-img { object-position: 88% center; }
+          .ab-fade { background: linear-gradient(to bottom, transparent 55%, var(--bg) 100%) !important; }
+          .ab-wrap { padding-top: 66vw; padding-bottom: 3.5rem; }
+          .ab-state { top: 1rem; }
+        }
+      `}</style>
         </section>
     );
 }

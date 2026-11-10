@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import Flag from '../components/Flag';
 import { reachConfig } from '../config';
 import type { UseLanguageReturn } from '../hooks/useLanguage';
 
@@ -124,7 +125,7 @@ export default function ReachSection({ lang }: ReachSectionProps) {
                   minWidth: '100px',
                 }}
               >
-                <span style={{ fontSize: '2.5rem', lineHeight: 1 }}>{country.flag}</span>
+                <Flag flag={country.flag} height={34} label={t(country.name, country.nameAr)} />
                 <span
                   style={{
                     fontSize: '12px',

@@ -17,7 +17,7 @@ export default function FooterSection({ lang }: FooterSectionProps) {
         padding: '4rem 0 2rem',
         zIndex: 2,
         borderTop: '1px solid rgba(0,229,255,0.08)',
-        background: 'rgba(5,10,15,0.95)',
+        background: 'rgba(0,0,0,0.95)',
       }}
     >
       <div
