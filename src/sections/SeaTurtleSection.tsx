@@ -670,8 +670,8 @@ export default function SeaTurtleSection({ lang }: SeaTurtleSectionProps) {
             let lastH = 0;
 
             const layout = () => {
-                const w = hero.clientWidth;
-                const h = hero.clientHeight;
+                const w = canvas.clientWidth;
+                const h = canvas.clientHeight;
                 if (!w || !h || (w === lastW && h === lastH)) return;
                 lastW = w;
                 lastH = h;
@@ -693,7 +693,7 @@ export default function SeaTurtleSection({ lang }: SeaTurtleSectionProps) {
             layout();
             if (typeof ResizeObserver !== 'undefined') {
                 resizeObserver = new ResizeObserver(layout);
-                resizeObserver.observe(hero);
+                resizeObserver.observe(canvas);
             } else {
                 onWindowResize = layout;
                 window.addEventListener('resize', onWindowResize);
@@ -726,7 +726,7 @@ export default function SeaTurtleSection({ lang }: SeaTurtleSectionProps) {
                 last = now;
                 tClock += dt * rate;
                 if (pDirty) {
-                    const r = hero.getBoundingClientRect();
+                    const r = canvas.getBoundingClientRect();
                     px = ((pcx - r.left) / r.width) * 2 - 1;
                     py = ((pcy - r.top) / r.height) * 2 - 1;
                     pDirty = false;
@@ -1431,7 +1431,25 @@ export default function SeaTurtleSection({ lang }: SeaTurtleSectionProps) {
 
                 @media (max-width: 760px) {
                     .st-section {
-                        min-height: 48rem;
+                        min-height: 0;
+                    }
+                    /* The turtle gets its own row above the glass card instead of hiding behind it */
+                    canvas.st-canvas {
+                        position: relative;
+                        inset: auto;
+                        flex: 0 0 auto;
+                        width: 100%;
+                        height: min(104vw, 27rem);
+                    }
+                    .st-caustic-glow {
+                        left: 50%;
+                        top: min(52vw, 13.5rem);
+                        width: 100vw;
+                        height: 100vw;
+                    }
+                    .st-wrap {
+                        gap: 1rem;
+                        padding-top: 0.5rem;
                     }
                     .st-stage-center {
                         margin-block: 1rem auto;
