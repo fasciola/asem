@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { investmentConfig } from '../config';
-import LazyVideo from '../components/LazyVideo';
 import type { UseLanguageReturn } from '../hooks/useLanguage';
 
 interface InvestmentSectionProps {
@@ -153,11 +152,6 @@ export default function InvestmentSection({ lang }: InvestmentSectionProps) {
           </li>
         ))}
       </ul>
-
-      {/* Video (unchanged content) */}
-      <div className="inv-video">
-        <LazyVideo src={`/${investmentConfig.video}`} poster={`/${investmentConfig.poster}`} style={{ width: '100%', display: 'block' }} />
-      </div>
 
       <style>{`
         .inv { --p: 0; --sh: calc(100svh - 7rem); position: relative; z-index: 2; overflow: hidden; padding: clamp(4rem, 8vw, 8rem) 0 clamp(3rem, 6vw, 6rem); }

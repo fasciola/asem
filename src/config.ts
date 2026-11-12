@@ -187,9 +187,9 @@ export const navigationConfig: NavigationConfig = {
         { label: 'Home', labelAr: 'الرئيسية', targetId: 'home' },
         { label: 'About', labelAr: 'من نحن', targetId: 'about' },
         { label: 'Services', labelAr: 'خدماتنا', targetId: 'services' },
+        { label: 'Investment', labelAr: 'الاستثمار', targetId: 'investment' },
         { label: 'Expertise', labelAr: 'خبراتنا', targetId: 'expertise' },
         { label: 'Clients', labelAr: 'عملاؤنا', targetId: 'clients' },
-        { label: 'Investment', labelAr: 'الاستثمار', targetId: 'investment' },
         { label: 'Contact', labelAr: 'تواصل معنا', targetId: 'contact' },
     ],
 };
